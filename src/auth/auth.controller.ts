@@ -7,10 +7,10 @@ import { Response } from 'express';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    @Post()
+    @Post('signin')
     @HttpCode(200)
-    signin(@Body() body: SigninDto,
+    async signin(@Body() body: SigninDto,
         @Res({ passthrough: true }) res: Response,) {
-        return this.authService.signin(body, res)
+        return await this.authService.signin(body, res)
     }
 }

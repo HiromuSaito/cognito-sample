@@ -19,7 +19,7 @@ export class AuthService {
                 PASSWORD: signinDto.password
             },
         })
-        cognitClinet.send(command).
+        await cognitClinet.send(command).
             then((result) => {
                 res.cookie('id_token', result.AuthenticationResult?.IdToken)
                 res.cookie('access_token', result.AuthenticationResult?.AccessToken)
