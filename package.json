@@ -23,6 +23,7 @@
   "dependencies": {
     "@aws-sdk/client-cognito-identity": "^3.332.0",
     "@aws-sdk/client-cognito-identity-provider": "^3.329.0",
+    "@aws-sdk/client-s3": "^3.332.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^9.0.0",
