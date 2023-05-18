@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { GetObjectCommand, ListObjectsCommand, S3Client } from '@aws-sdk/client-s3'
+import { GetObjectCommand, ListObjectsCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 @Injectable()
 export class FileService {
@@ -54,6 +54,27 @@ export class FileService {
       console.error('get object error:', e)
       throw new InternalServerErrorException()
     }
+  }
+
+  async uploadFile(file: Express.Multer.File, idToken: string) {
+    const credentials = await this.authService.createTemporalCredential(idToken)
+    const s3Client = new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: credentials.AccessKeyId,
+        secretAccessKey: credentials.SecretKey,
+        sessionToken: credentials.SessionToken
+      }
+    })
+    const command = new PutObjectCommand({
+      Bucket: process.env.BUCKET_NAME,
+      Key: file.originalname,
+      Body: file.buffer
+    })
+    await s3Client.send(command).catch(e => {
+      console.error('put object error:', e)
+      throw new InternalServerErrorException()
+    })
   }
 }
 
