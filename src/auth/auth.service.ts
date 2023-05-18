@@ -44,7 +44,7 @@ export class AuthService {
     try {
       return (await cognitClinet.send(command)).Credentials
     } catch (e) {
-      console.log(e)
+      console.log('get tomporalCredetial error:', e)
       throw new UnauthorizedException()
     }
   }
