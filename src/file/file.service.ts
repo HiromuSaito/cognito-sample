@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from '../auth/auth.service';
-import { ListObjectsCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, ListObjectsCommand, S3Client } from '@aws-sdk/client-s3'
 
 @Injectable()
 export class FileService {
@@ -26,6 +26,33 @@ export class FileService {
       return res.Contents.map(c => ({ name: c.Key }))
     } catch (e) {
       console.error('list object error : ', e)
+      throw new InternalServerErrorException()
+    }
+  }
+
+  async getFile(idToken: string, fileName: string) {
+    const credentials = await this.authService.createTemporalCredential(idToken)
+    const s3Client = new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: credentials.AccessKeyId,
+        secretAccessKey: credentials.SecretKey,
+        sessionToken: credentials.SessionToken
+      }
+    })
+
+    const command = new GetObjectCommand(
+      {
+        Bucket: process.env.BUCKET_NAME,
+        Key: fileName
+      }
+    )
+    try {
+      const res = await s3Client.send(command)
+      return res.Body.transformToByteArray()
+    } catch (e) {
+      console.error('get object error:', e)
+      throw new InternalServerErrorException()
     }
   }
 }
