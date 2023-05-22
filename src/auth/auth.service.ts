@@ -8,7 +8,11 @@ import { CognitoIdentityClient, Credentials, GetCredentialsForIdentityCommand, G
 export class AuthService {
   async signin(signinDto: SigninDto, res: Response) {
     const cognitClinet = new CognitoIdentityProviderClient({
-      region: process.env.AWS_REGION
+      region:process.env.AWS_DEFAULT_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      }
     })
 
     const command = new AdminInitiateAuthCommand({
@@ -34,7 +38,11 @@ export class AuthService {
   async createTemporalCredential(idToken: string): Promise<Credentials> {
     const identityId = await this.getIdentityId(idToken);
     const cognitClinet = new CognitoIdentityClient({
-      region: process.env.AWS_REGION
+      region:process.env.AWS_DEFAULT_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      }
     })
     const command = new GetCredentialsForIdentityCommand({
       IdentityId: identityId,
@@ -51,7 +59,11 @@ export class AuthService {
 
   async getIdentityId(idToken: string): Promise<string> {
     const cognitClinet = new CognitoIdentityClient({
-      region: process.env.AWS_REGION
+      region:process.env.AWS_DEFAULT_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      }
     })
 
     const command = new GetIdCommand({
