@@ -12,12 +12,12 @@ Amazon Cognito を使用した認証・認可のサンプルコード
 AWSリソースを作成の上、プロジェクトルートディレクトリに下記を記載した.envファイルを作成
 ``` :.env
 AWS_SECRET_ACCESS_KEY=hoge
-AWS_DEFAULT_REGIONhoge
-AWS_ACCESS_KEY_IDhoge
-USER_POOL_IDhoge
-COGNITO_CLIENT_IDhoge
-COGNITO_ID_POOLhoge
-BUCKET_NAMEhoge
+AWS_DEFAULT_REGION=hoge
+AWS_ACCESS_KEY_ID=hoge
+USER_POOL_ID=hoge
+COGNITO_CLIENT_ID=hoge
+COGNITO_ID_POOL=hoge
+BUCKET_NAME=hoge
 ```
 
 ``` bash
